@@ -62,7 +62,7 @@ with warnings.catch_warnings():
     warnings.simplefilter("ignore")
     warnings.warn("deprecated", DeprecationWarning)
 
-np.warnings.filterwarnings('ignore', category=np.VisibleDeprecationWarning)
+warnings.filterwarnings('ignore', category=np.VisibleDeprecationWarning)
     
 def get_new_NibImgJ(new_img, temp_imgJ, dataType=np.float32):
     temp_imgJ.set_data_dtype(dataType)
