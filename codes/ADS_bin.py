@@ -157,7 +157,7 @@ def check_regions(img):
 def remove_small_objects(img, remove_max_size=5, structure = np.ones((3,3))):
     binary = img
     binary[binary>0] = 1
-    labels = np.array(scipy.ndimage.label(binary, structure=structure))[0]
+    labels = scipy.ndimage.label(binary, structure=structure)[0]
     labels_num = [len(labels[labels==each]) for each in np.unique(labels)]
     new_img = img
     for index in np.unique(labels):
