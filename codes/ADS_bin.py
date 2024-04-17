@@ -187,7 +187,7 @@ def get_MaskNet_MNI(model, Dwi_MNI_img, B0_MNI_img):
     y_pred = (np.squeeze(y_pred)>0.5)*1.0
 
     dilate_mask = y_pred
-    mask_label, num_features = scipy.ndimage.measurements.label(dilate_mask)
+    mask_label, num_features = scipy.ndimage.label(dilate_mask)
     dilate_mask = (mask_label == mask_label[24,28,24])*1
     # for i in range(48):
     #     dilate_mask[:,:,i] = scipy.ndimage.binary_dilation(dilate_mask[:,:,i])*1.0
