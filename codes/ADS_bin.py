@@ -305,9 +305,9 @@ def get_stroke_seg_MNI(model, dwi_img, adc_img, Prob_IS=None, N_channel=3, DS=2)
     return stroke_pred_tmp
 
 def get_DirPaths():
-    CodesDir = os.path.dirname(os.path.abspath(__file__)) + '/'
+    CodesDir = os.path.dirname(os.path.abspath(__file__)) + os.path.sep
 #     print(CodesDir)
-    ProjectDir = os.path.join('/'.join(CodesDir.split('/')[0:-2]),'')
+    ProjectDir = os.path.join(os.path.sep.join(CodesDir.split(os.path.sep)[0:-2]),'')
     TemplateDir = os.path.join(ProjectDir,'data','template','')
     TrainedNetsDir = os.path.join(ProjectDir,'data','Trained_Nets','')
     return CodesDir, ProjectDir, TemplateDir, TrainedNetsDir
@@ -320,7 +320,7 @@ def gen_result_png(SubjDir,
 
     plt.rcParams["axes.grid"] = False
     
-    SubjID = os.path.join(SubjDir,'').split('/')[-2]
+    SubjID = os.path.join(SubjDir,'').split(os.path.sep)[-2]
     DwiPath = os.path.join(SubjDir, SubjID + '_DWI.nii')
     B0Path = os.path.join(SubjDir, SubjID + '_b0.nii')
     ADCPath = os.path.join(SubjDir, SubjID + '_ADC.nii')
@@ -700,7 +700,7 @@ def ADS(SubjDir,
         ):
     
     CodesDir, ProjectDir, TemplateDir, TrainedNetsDir = get_DirPaths()
-    SubjID = os.path.join(SubjDir,'').split('/')[-2]
+    SubjID = os.path.join(SubjDir,'').split(os.path.sep)[-2]
     MaskNet_name =  os.path.join(TrainedNetsDir, 'BrainMaskNet.h5')
     Lesion_model_name = os.path.join(TrainedNetsDir, model_name+'.h5')
     lesion_name = model_name + '_' + lesion_name
