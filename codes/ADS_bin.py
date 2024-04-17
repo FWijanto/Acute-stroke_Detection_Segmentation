@@ -210,7 +210,7 @@ def qfunc(x):
 def get_dwi_normalized(Dwi_ss_MNI_img,mask_raw_MNI_img):
     Dwi_d = Dwi_ss_MNI_img[mask_raw_MNI_img>0.5]
 
-    md = scipy.stats.mode(Dwi_d.astype('int16'))[0][0]
+    md = scipy.stats.mode(Dwi_d.astype('int16'), keepdims=True)[0][0]
     if md > np.mean(Dwi_d):
         p0_mu = md
     else:
