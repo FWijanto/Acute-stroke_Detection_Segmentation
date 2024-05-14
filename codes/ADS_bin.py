@@ -51,7 +51,7 @@ from dipy.align import (affine_registration, center_of_mass, translation,
 from dipy.segment.mask import median_otsu
 from dipy.core.histeq import histeq
 
-from scipy.ndimage import morphology, gaussian_filter
+from scipy.ndimage import gaussian_filter
 from scipy.special import erf
 from scipy.optimize import minimize,leastsq, curve_fit
 
@@ -140,16 +140,16 @@ def Sequential_Registration_b0(static, static_grid2world, moving, moving_grid2wo
 
 def Stroke_closing(img):
     new_img = np.zeros_like(img)
-    new_img = morphology.binary_closing(img, structure=np.ones((2,2,2)))
+    new_img = scipy.ndimage.binary_closing(img, structure=np.ones((2,2,2)))
     return new_img
 
 def Stroke_connected(img, connect_radius=1):
-    return morphology.binary_dilation(img, morphology.ball(radius=connect_radius))
+    return scipy.ndimage.binary_dilation(img, scipy.ndimage.ball(radius=connect_radius))
 
 def check_regions(img):
     binary = np.zeros_like(img)
     binary[binary>0] = 1
-    labels = morphology.label(binary)
+    labels = scipy.ndimage.label(binary)
     labels_num = [len(labels[labels==each]) for each in np.unique(labels)]
     print(np.unique(labels))
     print(labels_num)
@@ -192,7 +192,7 @@ def get_MaskNet_MNI(model, Dwi_MNI_img, B0_MNI_img):
     # for i in range(48):
     #     dilate_mask[:,:,i] = scipy.ndimage.binary_dilation(dilate_mask[:,:,i])*1.0
     dilate_mask = Stroke_closing(dilate_mask)
-    dilate_mask = morphology.binary_fill_holes(dilate_mask)
+    dilate_mask = scipy.ndimage.binary_fill_holes(dilate_mask)
 
     upsampling_mask = np.repeat(np.repeat(np.repeat(dilate_mask, 4, axis=0), 4, axis=1), 4, axis=2)
 
@@ -300,7 +300,7 @@ def get_stroke_seg_MNI(model, dwi_img, adc_img, Prob_IS=None, N_channel=3, DS=2)
     stroke_pred_tmp = (stroke_pred_resampled>0.5)
 #     stroke_pred_tmp = remove_small_objects_InSlice(stroke_pred_tmp)
     stroke_pred_tmp = Stroke_closing(stroke_pred_tmp)
-    stroke_pred_tmp = morphology.binary_fill_holes(stroke_pred_tmp)
+    stroke_pred_tmp = scipy.ndimage.binary_fill_holes(stroke_pred_tmp)
     
     return stroke_pred_tmp
 
@@ -634,7 +634,7 @@ def ADS_pipeline(SubjDir,
     
     stroke_pred_raw_img = remove_small_objects_InSlice(stroke_pred_raw_img)
     stroke_pred_raw_img = Stroke_closing(stroke_pred_raw_img)
-    stroke_pred_raw_img = morphology.binary_fill_holes(stroke_pred_raw_img)
+    stroke_pred_raw_img = scipy.ndimage.binary_fill_holes(stroke_pred_raw_img)
     
     print('------ Inferencing lesion prediction ------')
     print('It takes %.2f seconds'% (time.time() - start_time))
